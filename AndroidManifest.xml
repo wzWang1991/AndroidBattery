@@ -22,6 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Chart -->
+
+        <activity android:name="org.achartengine.GraphicalActivity" />
+        <activity
+            android:name="com.example.batterymeasure.PeriodicalTask"
+            android:label="@string/title_activity_periodical_task" >
+        </activity>
+
+        <service
+            android:name="com.example.batterymeasure.BatteryService"
+            android:enabled="true" />
+
+        <activity
+            android:name="com.example.batterymeasure.BatteryCurve"
+            android:label="@string/title_activity_battery_curve" >
+        </activity>
     </application>
 
 </manifest>

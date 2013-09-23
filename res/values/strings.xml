@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BatteryMeasure</string>
+    <string name="app_name">BatteryLifeMeasure</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_website">Website</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="hello_world">Battery Test</string>
+    <string name="title_activity_periodical_task">PeriodicalTask</string>
+    <string name="button_map">Google Map</string>
+    <string name="button_result">Get result</string>
+    <string name="button_viewCurve">View curve</string>
+    <string name="title_activity_battery_curve">BatteryCurve</string>
 
 </resources>
