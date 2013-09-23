@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class BatteryCurve extends Activity {
 
@@ -71,7 +73,31 @@ public class BatteryCurve extends Activity {
 				totalTestTime, 0, 100, Color.WHITE, Color.WHITE);
 		View chart = ChartFactory.getLineChartView(this, dataset, renderer);
 
-		setContentView(chart);
+		//setContentView(chart);
+		setContentView(R.layout.activity_battery_curve);
+		LinearLayout chartView = (LinearLayout)findViewById(R.id.curveView);
+		chartView.addView(chart);
+		
+	   	//Calculate projected battery life.
+		int totalBatteryConsumption = batteryLevel[0]-batteryLevel[batteryLevel.length-1];
+		String batteryReport = "";
+		batteryReport += "Start time: "+batteryRecordTime[0]+"\n";
+		batteryReport += "Stop time: "+batteryRecordTime[batteryRecordTime.length - 1]+"\n";
+		batteryReport += "Total test time: "+ totalTestTime + " s\n";
+		if(totalBatteryConsumption!=0){
+		int projectedTimeInSeconds = totalTestTime/totalBatteryConsumption * 100;
+		
+		int projectedTimePartMinute = projectedTimeInSeconds/60;
+		int projectedTimePartSecond = projectedTimeInSeconds%60;
+		
+		batteryReport = batteryReport + "\nProjected Battery Life: "+projectedTimePartMinute+" minutes and "+projectedTimePartSecond+" seconds.\n";
+		}else{
+			batteryReport+="Can't determine the projected battery life.";
+		}
+		TextView tv = (TextView)findViewById(R.id.textViewCurve);
+		tv.setText(batteryReport);
+		
+		
 	}
 
 	protected XYMultipleSeriesDataset buildDataset(String title, int[] xValues,
@@ -118,7 +144,7 @@ public class BatteryCurve extends Activity {
 		renderer.setChartTitleTextSize(30);
 		renderer.setApplyBackgroundColor(true);
 		renderer.setBackgroundColor(Color.BLACK);
-		renderer.setAxisTitleTextSize(20);
+		renderer.setAxisTitleTextSize(25);
 	}
 
 	@Override

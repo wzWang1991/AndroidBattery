@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
     }
     
     public void getBatteryInfo(View v) {
-    	batteryConsumptionTime.clear();
-    	batteryConsumptionLevel.clear();
-    	batteryConsumptionScale.clear();
+    	//batteryConsumptionTime.clear();
+    	//batteryConsumptionLevel.clear();
+    	//batteryConsumptionScale.clear();
     	BatteryConsumptionReceiver receiver = new BatteryConsumptionReceiver();
     	IntentFilter filter = new IntentFilter();
     	filter.addAction("android.intent.action.battery");
@@ -107,26 +107,7 @@ public class MainActivity extends Activity {
     		tmp=tmp+batteryConsumptionTime.get(i)+"|"+batteryConsumptionLevel.get(i)+"%\n";
     	}
     	
-    	//Calculate projected battery life.
-    	SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date startTime = new Date();
-		Date stopTime = new Date();
-		try {
-			startTime = (Date) df.parse(batteryConsumptionTime.get(0));
-			stopTime = (Date) df
-					.parse(batteryConsumptionTime.get(batteryConsumptionTime.size()-1));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		int totalTestTime = (int) ((stopTime.getTime() - startTime.getTime()) / 1000);
-		int totalBatteryConsumption = batteryConsumptionLevel.get(0)-batteryConsumptionLevel.get(batteryConsumptionTime.size()-1);
-		int projectedTimeInSeconds = totalTestTime/totalBatteryConsumption * 100;
-		
-		int projectedTimePartMinute = projectedTimeInSeconds/60;
-		int projectedTimePartSecond = projectedTimeInSeconds%60;
-		
-		tmp = tmp + "\nProjected Battery Life: "+projectedTimePartMinute+" minutes and "+projectedTimePartSecond+" seconds.\n";
+ 
 		tv.setText(tmp);
 		
 	 }
