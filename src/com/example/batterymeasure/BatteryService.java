@@ -1,5 +1,6 @@
 package com.example.batterymeasure;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.text.format.DateFormat;
 import android.widget.TextView;
 
 public class BatteryService extends Service {
@@ -55,15 +57,17 @@ public class BatteryService extends Service {
 		unregisterReceiver(receiver);
 	}
 	
-	 private void sendBatteryConsumption(int level, int scale){
+	private void sendBatteryConsumption(int level, int scale) {
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Date nowTime = new Date();
+		String nowTimeString = df.format(nowTime);
 		Intent ittmp = new Intent();
 		ittmp.setAction("android.intent.action.battery");
-		ittmp.putExtra("BATTERY_COMSUMPTION_TIME", nowTime.toString());
+		ittmp.putExtra("BATTERY_COMSUMPTION_TIME", nowTimeString);
 		ittmp.putExtra("BATTERY_COMSUMPTION_LEVEL", level);
 		ittmp.putExtra("BATTERY_COMSUMPTION_SCALE", scale);
 		sendBroadcast(ittmp);
-	 }
+	}
 	 
 
 

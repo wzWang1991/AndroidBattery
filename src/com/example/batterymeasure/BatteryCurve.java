@@ -1,6 +1,9 @@
 package com.example.batterymeasure;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.achartengine.ChartFactory;
@@ -12,73 +15,87 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 
 public class BatteryCurve extends Activity {
 
-	@Override 
-    public void onCreate(Bundle savedInstanceState) { 
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Intent it = getIntent();
+		// get battery data
+		String[] batteryRecordTime = it.getStringArrayExtra("BATTERY_TIME");
+		int[] batteryLevel = it.getIntArrayExtra("BATTERY_LEVEL");
+		int[] batteryScale = it.getIntArrayExtra("BATTERY_SCALE");
 
-        String[] titles = new String[] { "First", "Second"};
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date startTime = new Date();
+		Date stopTime = new Date();
+		try {
+			startTime = (Date) df.parse(batteryRecordTime[0]);
+			stopTime = (Date) df
+					.parse(batteryRecordTime[batteryRecordTime.length - 1]);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int totalTestTime = (int) ((stopTime.getTime() - startTime.getTime()) / 1000);
+		int[] xLabel = new int[batteryRecordTime.length];
+		double[] yLabel = new double[batteryRecordTime.length];
 
-        List x = new ArrayList(); 
-        List y = new ArrayList();
-
-        x.add(new double[] { 1, 3, 5, 7, 9, 11} ); 
-        x.add(new double[] { 0, 2, 4, 6, 8, 10} );
-
-        y.add(new double[] { 3, 14, 5, 30, 20, 25}); 
-        y.add(new double[] { 18, 9, 21, 15, 10, 6});
-
-        XYMultipleSeriesDataset dataset = buildDataset(titles, x, y);
-
-        int[] colors = new int[] { Color.BLUE, Color.GREEN}; 
-        PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND}; 
-        XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles, true);
-
-        setChartSettings(renderer, "Line Chart Demo", "X", "Y", -1, 12, 0, 35 , Color.WHITE, Color.WHITE);
-        View chart = ChartFactory.getLineChartView(this, dataset, renderer);
-
-        setContentView(chart); 
-    }
-
-	
-	protected XYMultipleSeriesDataset buildDataset(String[] titles,
-			List xValues, List yValues) {
-		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-
-		int length = titles.length; 
-		for (int i = 0; i < length; i++) {
-			XYSeries series = new XYSeries(titles[i]); 
-			double[] xV = (double[]) xValues.get(i); 
-			double[] yV = (double[]) yValues.get(i);
-			int seriesLength = xV.length;
-
-			for (int k = 0; k < seriesLength; k++) 
-			{
-				series.add(xV[k], yV[k]);
+		for (int i = 0; i < batteryRecordTime.length; i++) {
+			Date nowTime = new Date();
+			try {
+				nowTime = (Date) df.parse(batteryRecordTime[i]);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			dataset.addSeries(series);
+			int timeLength = (int) ((nowTime.getTime() - startTime.getTime()) / 1000);
+			xLabel[i] = timeLength;
+			yLabel[i] = (double) batteryLevel[i] / (double) batteryScale[i] * 100;
 		}
 
+		String title = "Battery Consumption";
+
+		XYMultipleSeriesDataset dataset = buildDataset(title, xLabel, yLabel);
+
+		int color = Color.GREEN;
+		PointStyle style = PointStyle.CIRCLE;
+		XYMultipleSeriesRenderer renderer = buildRenderer(color, style, true);
+
+		setChartSettings(renderer, "Battery Consumtpion", "Time(s)", "Battery(%)", 0,
+				totalTestTime, 0, 100, Color.WHITE, Color.WHITE);
+		View chart = ChartFactory.getLineChartView(this, dataset, renderer);
+
+		setContentView(chart);
+	}
+
+	protected XYMultipleSeriesDataset buildDataset(String title, int[] xValues,
+			double[] yValues) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+
+		XYSeries series = new XYSeries(title);
+		int length = xValues.length;
+		for (int i = 0; i < length; i++) {
+			series.add(xValues[i], yValues[i]);
+		}
+		dataset.addSeries(series);
 		return dataset;
 	}
 
-	protected XYMultipleSeriesRenderer buildRenderer(int[] colors,
-			PointStyle[] styles, boolean fill) {
+	protected XYMultipleSeriesRenderer buildRenderer(int color,
+			PointStyle style, boolean fill) {
 		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-		int length = colors.length;
-		for (int i = 0; i < length; i++) {
-			XYSeriesRenderer r = new XYSeriesRenderer();
-			r.setColor(colors[i]);
-			r.setPointStyle(styles[i]);
-			r.setFillPoints(fill);
-			renderer.addSeriesRenderer(r);
-		}
+		XYSeriesRenderer r = new XYSeriesRenderer();
+		r.setColor(color);
+		r.setPointStyle(style);
+		r.setFillPoints(fill);
+		renderer.addSeriesRenderer(r);
+
 		return renderer;
 	}
 
@@ -95,6 +112,13 @@ public class BatteryCurve extends Activity {
 		renderer.setYAxisMax(yMax);
 		renderer.setAxesColor(axesColor);
 		renderer.setLabelsColor(labelsColor);
+		// add by wzwang
+		renderer.setLabelsTextSize(20);
+		renderer.setLegendTextSize(25);
+		renderer.setChartTitleTextSize(30);
+		renderer.setApplyBackgroundColor(true);
+		renderer.setBackgroundColor(Color.BLACK);
+		renderer.setAxisTitleTextSize(20);
 	}
 
 	@Override
