@@ -40,7 +40,7 @@ public class PeriodicalTask extends Activity implements Runnable {
     	ArrayList<String> addressList = new ArrayList<String>();
     	addressList.add("Zhangzhou Fujian China");
     	addressList.add("Columbia University New York");
-    	addressList.add("Google company Califonia");
+    	addressList.add("Shanghai Jiaotong University");
     	
     	ArrayList<String> websiteList = new ArrayList<String>();
     	websiteList.add("http://www.google.com");
@@ -55,7 +55,7 @@ public class PeriodicalTask extends Activity implements Runnable {
         Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=211W 108th Street New York"));
         while(true){
         	if((new Date().getTime()-startTime.getTime())/1000>=runningTime*60) break;
-    		searchAddress.setData(Uri.parse("geo:0,0?q="+addressList.get(addressPointer)));
+    		searchAddress.setData(Uri.parse("geo:0,0?q="+addressList.get(addressPointer)+"?z=20"));
     		visitWebsite.setData(Uri.parse(websiteList.get(addressPointer)));
     		addressPointer++;
     		if(taskType.equals("visitWebsite")){
