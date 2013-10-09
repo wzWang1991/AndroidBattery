@@ -6,13 +6,19 @@ import java.util.Date;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 
 public class PeriodicalTask extends Activity implements Runnable {
 	private String taskType;
 	private int runningTime;
+	private int runningInterval;
 	private Date startTime;
 
 	@Override
@@ -22,6 +28,7 @@ public class PeriodicalTask extends Activity implements Runnable {
 		Intent intent = getIntent();
 		taskType = intent.getStringExtra("TASK_TYPE");
 		runningTime=intent.getIntExtra("RUNNING_TIME", 2);
+		runningInterval=intent.getIntExtra("RUNNING_INTERVAL", 5);
 		startTime = new Date();
 		Thread thread = new Thread(this);
 		thread.start();
@@ -39,7 +46,7 @@ public class PeriodicalTask extends Activity implements Runnable {
 		
     	ArrayList<String> addressList = new ArrayList<String>();
     	addressList.add("Zhangzhou Fujian China");
-    	addressList.add("Columbia University New York");
+    	addressList.add("Columbia University 116th Street and Broadway New York");
     	addressList.add("Shanghai Jiaotong University");
     	
     	ArrayList<String> websiteList = new ArrayList<String>();
@@ -66,7 +73,7 @@ public class PeriodicalTask extends Activity implements Runnable {
     		}
 
 			try{
-				Thread.sleep(5000);
+				Thread.sleep(1000*runningInterval);
 			}catch(Exception e)
 			{
 				
@@ -81,7 +88,31 @@ public class PeriodicalTask extends Activity implements Runnable {
         Intent itService = new Intent(getApplicationContext(), BatteryService.class);
         itService.addCategory("BatteryServiceTAG");
     	stopService(itService);
+    	createNotification();
 		
 	}
+	
+    @SuppressLint("NewApi")
+	public void createNotification(){
+        String svcName = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager;
+        notificationManager = (NotificationManager)getSystemService(svcName);
+        
+        Context context = getApplicationContext();
+        //notification;
+        Intent newIntent =new Intent(this, MainActivity.class);
+      
+        PendingIntent newPendingIntent=PendingIntent.getActivity(context, 0, newIntent, 0);
+        CharSequence charseq = "Test is finished!";
+        Notification noti = new Notification.Builder(context)
+        .setContentTitle("Test Finished!" )
+        .setContentText("Now you can click here to go back to main interface.")
+        .setSmallIcon(R.drawable.ic_launcher)
+        .setAutoCancel(true)
+        .setContentIntent(newPendingIntent)
+        .setTicker(charseq)
+        .build(); 
+       notificationManager.notify(1,noti);
+    }
 
 }

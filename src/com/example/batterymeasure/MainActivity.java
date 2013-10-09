@@ -1,27 +1,23 @@
 package com.example.batterymeasure;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Browser;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 public class MainActivity extends Activity {
 	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -30,13 +26,17 @@ public class MainActivity extends Activity {
 	private ArrayList<Integer> batteryConsumptionScale = new ArrayList<Integer>();
 	TextView tv;
 	EditText runningTimeSetting;
+	EditText runningTimeInterval;
 	
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv=(TextView)findViewById(R.id.textView1); 
         runningTimeSetting=(EditText)findViewById(R.id.editText1);
+        runningTimeInterval=(EditText)findViewById(R.id.editText2);
+        
     }
     
 
@@ -47,7 +47,40 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    public void getBatteryInfo(View v) {
+    @SuppressLint("NewApi")
+	public void createNotification(){
+        String svcName = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager;
+        notificationManager = (NotificationManager)getSystemService(svcName);
+        
+        Context context = getApplicationContext();
+        //notification;
+        Intent newIntent =new Intent(this, MainActivity.class);
+      
+        PendingIntent newPendingIntent=PendingIntent.getActivity(MainActivity.this, 0, newIntent, 0);
+        CharSequence charseq = "Test is over";
+        Notification noti = new Notification.Builder(context)
+        .setContentTitle("Title" )
+        .setContentText("Test")
+        .setSmallIcon(R.drawable.ic_launcher)
+        .setAutoCancel(true)
+        .setContentIntent(newPendingIntent)
+        .setTicker(charseq)
+        .build(); 
+       notificationManager.notify(1,noti);
+    }
+    
+    public void toastShow(String msg){
+        Context context = this;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, msg, duration); int offsetX = 0;
+        int offsetY = 0;
+        toast.setGravity(Gravity.BOTTOM, offsetX, offsetY);
+        toast.show();
+    }
+    
+    
+    public void getBatteryInfo() {
     	//batteryConsumptionTime.clear();
     	//batteryConsumptionLevel.clear();
     	//batteryConsumptionScale.clear();
@@ -60,6 +93,7 @@ public class MainActivity extends Activity {
     	itService.addCategory("BatteryServiceTAG");
     	startService(itService);
     }
+    
     public void viewCurve(View v) {
     	Intent intent = new Intent(this, BatteryCurve.class);
     	
@@ -76,14 +110,17 @@ public class MainActivity extends Activity {
     	intent.putExtra("BATTERY_LEVEL", batteryLevelArray);
     	intent.putExtra("BATTERY_SCALE", batteryScaleArray);
     	startActivity(intent);
-     
     }
   
     
     /** Called when the user clicks the Website button */
     public void visitWebsite(View view) {
+    	getBatteryInfo();
     	Intent intent = new Intent(this, PeriodicalTask.class);
     	int runningTime = Integer.parseInt(runningTimeSetting.getText().toString());
+    	int runningInterval = Integer.parseInt(runningTimeInterval.getText().toString());
+    	toastShow("Test start!");
+    	intent.putExtra("RUNNING_INTERVAL", runningInterval);
     	intent.putExtra("RUNNING_TIME", runningTime);
     	intent.putExtra("TASK_TYPE", "visitWebsite");
     	startActivity(intent);
@@ -92,8 +129,12 @@ public class MainActivity extends Activity {
     
     /** Called when the user clicks the GoogleMap button */
     public void searchAddress(View view) {
+    	getBatteryInfo();
     	Intent intent = new Intent(this, PeriodicalTask.class);
     	int runningTime = Integer.parseInt(runningTimeSetting.getText().toString());
+    	int runningInterval = Integer.parseInt(runningTimeInterval.getText().toString());
+    	toastShow("Test start!");
+    	intent.putExtra("RUNNING_INTERVAL", runningInterval);
     	intent.putExtra("RUNNING_TIME", runningTime);
     	intent.putExtra("TASK_TYPE", "searchAddress");
     	startActivity(intent);
@@ -101,6 +142,7 @@ public class MainActivity extends Activity {
     }
     
     public void getResult(View view){
+    	createNotification();
     	String tmp;
     	tmp="";
     	for(int i=0;i<batteryConsumptionTime.size();i++){
