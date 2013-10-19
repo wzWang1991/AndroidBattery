@@ -3,6 +3,8 @@ package com.example.batterymeasure;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.example.batterymeasure.MainActivity.BatteryConsumptionReceiver;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
@@ -11,15 +13,22 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.Menu;
 
 public class PeriodicalTask extends Activity implements Runnable {
 	private String taskType;
+	private String taskMode;
 	private int runningTime;
 	private int runningInterval;
+	private int runningPercentage;
 	private Date startTime;
+	private int batteryLevel;
+	private int batteryScale;
+	BatteryConsumptionReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +36,20 @@ public class PeriodicalTask extends Activity implements Runnable {
 		setContentView(R.layout.activity_periodical_task);
 		Intent intent = getIntent();
 		taskType = intent.getStringExtra("TASK_TYPE");
+		taskMode = intent.getStringExtra("TASK_MODE");
 		runningTime=intent.getIntExtra("RUNNING_TIME", 2);
 		runningInterval=intent.getIntExtra("RUNNING_INTERVAL", 5);
+		runningPercentage=intent.getIntExtra("RUNNING_PERCENTAGE", 2);
 		startTime = new Date();
+		
+    	receiver = new BatteryConsumptionReceiver();
+    	IntentFilter filter = new IntentFilter();
+    	filter.addAction("android.intent.action.battery");
+    	this.registerReceiver(receiver, filter);
+    	
+    	batteryLevel=100;
+    	batteryScale=100;
+    	
 		Thread thread = new Thread(this);
 		thread.start();
 	}
@@ -61,7 +81,12 @@ public class PeriodicalTask extends Activity implements Runnable {
     	int addressPointer=0;
         Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=211W 108th Street New York"));
         while(true){
-        	if((new Date().getTime()-startTime.getTime())/1000>=runningTime*60) break;
+        	if(taskMode.equals("StopByTime")){
+        		if((new Date().getTime()-startTime.getTime())/1000>=runningTime*60) break;
+        	}else if(taskMode.equals("StopByPercentage")){
+        		if(batteryLevel*100/batteryScale<=runningPercentage) break;
+        	}
+        	if(batteryLevel*100/batteryScale<=1) break;
     		searchAddress.setData(Uri.parse("geo:0,0?q="+addressList.get(addressPointer)+"?z=20"));
     		visitWebsite.setData(Uri.parse(websiteList.get(addressPointer)));
     		addressPointer++;
@@ -84,6 +109,7 @@ public class PeriodicalTask extends Activity implements Runnable {
     		}
 		}
         
+        unregisterReceiver(receiver);
 		// TODO Auto-generated method stub
         Intent itService = new Intent(getApplicationContext(), BatteryService.class);
         itService.addCategory("BatteryServiceTAG");
@@ -113,6 +139,18 @@ public class PeriodicalTask extends Activity implements Runnable {
         .setTicker(charseq)
         .build(); 
        notificationManager.notify(1,noti);
+    }
+    
+    
+    public class BatteryConsumptionReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Bundle bundle = intent.getExtras();
+			batteryLevel = bundle.getInt("BATTERY_COMSUMPTION_LEVEL");
+			batteryScale = bundle.getInt("BATTERY_COMSUMPTION_SCALE");
+		}
+    	
     }
 
 }

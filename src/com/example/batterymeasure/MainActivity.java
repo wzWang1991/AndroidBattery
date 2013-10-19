@@ -2,6 +2,8 @@ package com.example.batterymeasure;
 
 import java.util.ArrayList;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -14,7 +16,9 @@ import android.content.IntentFilter;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +29,27 @@ public class MainActivity extends Activity {
 	private ArrayList<Integer> batteryConsumptionLevel = new ArrayList<Integer>();
 	private ArrayList<Integer> batteryConsumptionScale = new ArrayList<Integer>();
 	TextView tv;
+	RadioGroup testMode;
+	RadioGroup testSelect;
 	EditText runningTimeSetting;
 	EditText runningTimeInterval;
+	EditText runningStopPercentage;
 	
     @SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Prevent system gets into sleep mode.
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
         tv=(TextView)findViewById(R.id.textView1); 
-        runningTimeSetting=(EditText)findViewById(R.id.editText1);
-        runningTimeInterval=(EditText)findViewById(R.id.editText2);
+        testMode=(RadioGroup)findViewById(R.id.radioGroup);
+        testSelect=(RadioGroup)findViewById(R.id.radioGroupTestSelect);
+        runningTimeSetting=(EditText)findViewById(R.id.editRunningTime);
+        runningTimeInterval=(EditText)findViewById(R.id.editRunningTimeInterval);
+        runningStopPercentage=(EditText)findViewById(R.id.editStopBatteryPercentage);
+        Context context = getApplicationContext();
+        keepScreenOn(context,true);
         
     }
     
@@ -81,9 +95,9 @@ public class MainActivity extends Activity {
     
     
     public void getBatteryInfo() {
-    	//batteryConsumptionTime.clear();
-    	//batteryConsumptionLevel.clear();
-    	//batteryConsumptionScale.clear();
+    	batteryConsumptionTime.clear();
+    	batteryConsumptionLevel.clear();
+    	batteryConsumptionScale.clear();
     	BatteryConsumptionReceiver receiver = new BatteryConsumptionReceiver();
     	IntentFilter filter = new IntentFilter();
     	filter.addAction("android.intent.action.battery");
@@ -113,36 +127,38 @@ public class MainActivity extends Activity {
     }
   
     
-    /** Called when the user clicks the Website button */
-    public void visitWebsite(View view) {
+    // Called when the user clicks start test button.
+    public void startTest(View view){
+    	String taskType="";
+    	if(testSelect.getCheckedRadioButtonId()==R.id.radioButtonTestSelectWebsite){
+    		taskType="visitWebsite";
+    	}else{
+    		taskType="searchAddress";
+    	}
+    	
+    	String taskMode="";
+    	if(testMode.getCheckedRadioButtonId()==R.id.radioButtonTestForTime){
+    		taskMode="StopByTime";
+    	}else{
+    		taskMode="StopByPercentage";
+    	}
+    	
     	getBatteryInfo();
     	Intent intent = new Intent(this, PeriodicalTask.class);
     	int runningTime = Integer.parseInt(runningTimeSetting.getText().toString());
     	int runningInterval = Integer.parseInt(runningTimeInterval.getText().toString());
+    	int runningPercentage = Integer.parseInt(runningStopPercentage.getText().toString());
     	toastShow("Test start!");
     	intent.putExtra("RUNNING_INTERVAL", runningInterval);
     	intent.putExtra("RUNNING_TIME", runningTime);
-    	intent.putExtra("TASK_TYPE", "visitWebsite");
+    	intent.putExtra("RUNNING_PERCENTAGE", runningPercentage);
+    	intent.putExtra("TASK_TYPE", taskType);
+    	intent.putExtra("TASK_MODE", taskMode);
     	startActivity(intent);
-
-    }
-    
-    /** Called when the user clicks the GoogleMap button */
-    public void searchAddress(View view) {
-    	getBatteryInfo();
-    	Intent intent = new Intent(this, PeriodicalTask.class);
-    	int runningTime = Integer.parseInt(runningTimeSetting.getText().toString());
-    	int runningInterval = Integer.parseInt(runningTimeInterval.getText().toString());
-    	toastShow("Test start!");
-    	intent.putExtra("RUNNING_INTERVAL", runningInterval);
-    	intent.putExtra("RUNNING_TIME", runningTime);
-    	intent.putExtra("TASK_TYPE", "searchAddress");
-    	startActivity(intent);
-
     }
     
     public void getResult(View view){
-    	createNotification();
+    	
     	String tmp;
     	tmp="";
     	for(int i=0;i<batteryConsumptionTime.size();i++){
@@ -174,5 +190,30 @@ public class MainActivity extends Activity {
 		batteryConsumptionLevel.add(level);
 		batteryConsumptionScale.add(scale);
 	}
+	
+	
+	
+	/**
+     *Keep screen on
+     *
+     * @param on
+     *            
+     */
+    private static WakeLock wl;
+    @SuppressWarnings("deprecation")
+	public static void keepScreenOn(Context context, boolean on) {
+        if (on) {
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
+            wl.acquire();
+        } else {
+            if (wl != null) {
+                wl.release();
+                wl = null;
+            }
+        }
+    }
+
+
     
 }

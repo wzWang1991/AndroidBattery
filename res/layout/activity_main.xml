@@ -2,103 +2,193 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
-    android:orientation="vertical" >
+    tools:context=".MainActivity" >
 
+    <!-- <Button -->
+    <!-- android:id="@+id/button1" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:onClick="getBatteryInfo" -->
+    <!-- android:text="Start Battery Service" /> -->
 
-    
-<!-- 	<Button -->
-<!--         android:id="@+id/button1" -->
-<!--         android:layout_width="wrap_content" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:onClick="getBatteryInfo" -->
-<!--         android:text="Start Battery Service" /> -->
-
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/textView2"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text=" Test time: " />
-
-	    <EditText
-	        android:id="@+id/editText1"
-	        android:layout_width="50dip"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:text="2" >
-
-	        <requestFocus />
-	    </EditText>
-
-	    <TextView
-	        android:id="@+id/textView3"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text=" minutes " />
-	</LinearLayout>
-	
-		<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/textView3"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text=" Test interval: " />
-
-	    <EditText
-	        android:id="@+id/editText2"
-	        android:layout_width="50dip"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:text="5" >
-	    </EditText>
-
-	    <TextView
-	        android:id="@+id/textView4"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text=" seconds " />
-	</LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="visitWebsite"
-        android:text="@string/button_website" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="searchAddress"
-        android:text="@string/button_map" />
-	 <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="getResult"
-        android:text="@string/button_result" />
-	 <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="viewCurve"
-        android:text="@string/button_viewCurve" />
-	 <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    
+        android:scrollbars="vertical" >
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-   
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Test interval: " />
+
+                <EditText
+                    android:id="@+id/editRunningTimeInterval"
+                    android:layout_width="50dip"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="5" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" seconds " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textViewRadiobutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose test mode:" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="testMode" >
+
+                    <RadioButton
+                        android:id="@+id/radioButtonTestForTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Test for a period of time" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonTestForPercentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Test until battery gets certain percent" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Test time: " />
+
+                <EditText
+                    android:id="@+id/editRunningTime"
+                    android:layout_width="50dip"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:text="2" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" minutes " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Test until battery gets " />
+
+                <EditText
+                    android:id="@+id/editStopBatteryPercentage"
+                    android:layout_width="60dip"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:text="2" >
+                </EditText>
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textViewRadioButtonTestSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Test:" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupTestSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="testSelect" >
+
+                    <RadioButton
+                        android:id="@+id/radioButtonTestSelectWebsite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Visit websites with Chrome" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonTestSelectMap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Searching addresses with Google Map" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="startTest"
+                android:text="Start Test" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="getResult"
+                android:text="@string/button_result" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="viewCurve"
+                android:text="@string/button_viewCurve" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
