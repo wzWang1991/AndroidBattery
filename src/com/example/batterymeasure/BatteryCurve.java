@@ -35,6 +35,8 @@ public class BatteryCurve extends Activity {
 	Date startTime;
 	Date stopTime;
 	int totalTestTime;
+	String taskType;
+	String taskMode;
 	
 	//xLable is the test time. yLable is Level/Scale at that time.
 	int[] xLabel;
@@ -48,6 +50,8 @@ public class BatteryCurve extends Activity {
 		batteryRecordTime = it.getStringArrayExtra("BATTERY_TIME");
 		batteryLevel = it.getIntArrayExtra("BATTERY_LEVEL");
 		batteryScale = it.getIntArrayExtra("BATTERY_SCALE");
+		taskType = it.getStringExtra("TASK_TYPE");
+		taskMode = it.getStringExtra("TASK_MODE");
 
 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		startTime = new Date();
@@ -200,6 +204,8 @@ public class BatteryCurve extends Activity {
 	public String reportPlainText(){
 		String report="";
 		report += "#Battery Test Report\n\n";
+		if(taskType.equals("visitWebsite")) report +="TASK: Visiting websites in Chrome periodically.\n\n";
+		else report += "TASK: Searching addresses in Google Map periodically.\n\n";
 		report += "Start time:" + batteryRecordTime[0] + "\n";
 		report += "End time:" + batteryRecordTime[batteryRecordTime.length-1] +"\n";
 		report += "Time duration: " + totalTestTime + "s\n\n";

@@ -2,11 +2,14 @@ package com.example.batterymeasure;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import com.example.batterymeasure.MainActivity.BatteryConsumptionReceiver;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.provider.Browser;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -80,13 +83,15 @@ public class PeriodicalTask extends Activity implements Runnable {
     	
     	int addressPointer=0;
         Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=211W 108th Street New York"));
+        Context context = getApplicationContext();
+        keepScreenOn(context,true);
         while(true){
         	if(taskMode.equals("StopByTime")){
         		if((new Date().getTime()-startTime.getTime())/1000>=runningTime*60) break;
         	}else if(taskMode.equals("StopByPercentage")){
         		if(batteryLevel*100/batteryScale<=runningPercentage) break;
         	}
-        	if(batteryLevel*100/batteryScale<=1) break;
+        	if(batteryLevel*100/batteryScale<=5) break;
     		searchAddress.setData(Uri.parse("geo:0,0?q="+addressList.get(addressPointer)+"?z=20"));
     		visitWebsite.setData(Uri.parse(websiteList.get(addressPointer)));
     		addressPointer++;
@@ -108,13 +113,14 @@ public class PeriodicalTask extends Activity implements Runnable {
     			//break;
     		}
 		}
-        
+        keepScreenOn(context,false);
         unregisterReceiver(receiver);
 		// TODO Auto-generated method stub
         Intent itService = new Intent(getApplicationContext(), BatteryService.class);
         itService.addCategory("BatteryServiceTAG");
     	stopService(itService);
     	createNotification();
+    	
 		
 	}
 	
@@ -138,6 +144,7 @@ public class PeriodicalTask extends Activity implements Runnable {
         .setContentIntent(newPendingIntent)
         .setTicker(charseq)
         .build(); 
+       noti.defaults=Notification.DEFAULT_SOUND;
        notificationManager.notify(1,noti);
     }
     
@@ -152,5 +159,28 @@ public class PeriodicalTask extends Activity implements Runnable {
 		}
     	
     }
+    
+	
+	/**
+     *Keep screen on
+     *
+     * @param on
+     *            
+     */
+    private static WakeLock wl;
+    @SuppressWarnings("deprecation")
+	public static void keepScreenOn(Context context, boolean on) {
+        if (on) {
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
+            wl.acquire();
+        } else {
+            if (wl != null) {
+                wl.release();
+                wl = null;
+            }
+        }
+    }
+    
 
 }

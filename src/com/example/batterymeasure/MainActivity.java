@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         runningTimeInterval=(EditText)findViewById(R.id.editRunningTimeInterval);
         runningStopPercentage=(EditText)findViewById(R.id.editStopBatteryPercentage);
         Context context = getApplicationContext();
-        keepScreenOn(context,true);
+        //keepScreenOn(context,true);
         
     }
     
@@ -123,20 +123,24 @@ public class MainActivity extends Activity {
     	intent.putExtra("BATTERY_TIME", batteryTimeArray);
     	intent.putExtra("BATTERY_LEVEL", batteryLevelArray);
     	intent.putExtra("BATTERY_SCALE", batteryScaleArray);
+    	intent.putExtra("TASK_TYPE", taskType);
+    	intent.putExtra("TASK_MODE", taskMode);
     	startActivity(intent);
     }
   
     
     // Called when the user clicks start test button.
+    String taskType="";
+    String taskMode="";
     public void startTest(View view){
-    	String taskType="";
+    	
     	if(testSelect.getCheckedRadioButtonId()==R.id.radioButtonTestSelectWebsite){
     		taskType="visitWebsite";
     	}else{
     		taskType="searchAddress";
     	}
     	
-    	String taskMode="";
+    	
     	if(testMode.getCheckedRadioButtonId()==R.id.radioButtonTestForTime){
     		taskMode="StopByTime";
     	}else{
