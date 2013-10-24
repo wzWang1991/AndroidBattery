@@ -13,5 +13,6 @@
     <string name="button_result">Get result</string>
     <string name="button_viewCurve">View curve</string>
     <string name="title_activity_battery_curve">BatteryCurve</string>
+    <string name="title_activity_upload_test_data">UploadTestData</string>
 
 </resources>

@@ -24,13 +24,17 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080015;
+        public static final int action_settings=0x7f080019;
         public static final int button_export=0x7f080001;
         public static final int button_upload=0x7f080002;
+        public static final int button_upload_data=0x7f080018;
         public static final int curveView=0x7f080003;
         public static final int editRunningTime=0x7f08000c;
         public static final int editRunningTimeInterval=0x7f080005;
         public static final int editStopBatteryPercentage=0x7f08000e;
+        public static final int editText1=0x7f080016;
+        public static final int editText2=0x7f080017;
+        public static final int linearLayout1=0x7f080015;
         public static final int radioButtonTestForPercentage=0x7f08000a;
         public static final int radioButtonTestForTime=0x7f080009;
         public static final int radioButtonTestSelectMap=0x7f080013;
@@ -52,12 +56,14 @@ public final class R {
         public static final int activity_display_message=0x7f030001;
         public static final int activity_main=0x7f030002;
         public static final int activity_periodical_task=0x7f030003;
+        public static final int activity_upload_test_data=0x7f030004;
     }
     public static final class menu {
         public static final int battery_curve=0x7f070000;
         public static final int display_message=0x7f070001;
         public static final int main=0x7f070002;
         public static final int periodical_task=0x7f070003;
+        public static final int upload_test_data=0x7f070004;
     }
     public static final class string {
         public static final int action_settings=0x7f050003;
@@ -72,6 +78,7 @@ public final class R {
         public static final int title_activity_display_message=0x7f050005;
         public static final int title_activity_main=0x7f050004;
         public static final int title_activity_periodical_task=0x7f050007;
+        public static final int title_activity_upload_test_data=0x7f05000c;
     }
     public static final class style {
         /** 

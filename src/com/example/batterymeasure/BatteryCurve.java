@@ -197,7 +197,8 @@ public class BatteryCurve extends Activity {
 	
 	//Upload button click. Upload the report data to website.
 	public void uploadToWebsite(View v){
-		
+		Intent intent = new Intent(this, UploadTestData.class);
+		startActivity(intent);
 	}
 	
 	//Generate a report version of plain text. For export or upload.

@@ -95,7 +95,7 @@
 
                 <EditText
                     android:id="@+id/editRunningTime"
-                    android:layout_width="50dip"
+                    android:layout_width="60dip"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:text="2" >
@@ -123,7 +123,7 @@
                     android:layout_width="60dip"
                     android:layout_height="wrap_content"
                     android:ems="2"
-                    android:text="2" >
+                    android:text="10" >
                 </EditText>
 
                 <TextView
