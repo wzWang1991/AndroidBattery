@@ -16,15 +16,30 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 
 public class UploadTestData extends Activity {
+	String testData;
+	String testType;
+	String testTime;
+	EditText editTestData;
+	EditText editDescription;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upload_test_data);
+		Intent it=getIntent();
+		testData=it.getStringExtra("TEST_DATA");
+		testType=it.getStringExtra("TEST_TYPE");
+		testTime=it.getStringExtra("TEST_TIME");
+		editTestData=(EditText)findViewById(R.id.editText_TestData);
+		editTestData.setText(testData);
+		editDescription=(EditText)findViewById(R.id.editText_Description);
+		editDescription.setText(testType);
 	}
 
 	@Override
@@ -41,16 +56,17 @@ public class UploadTestData extends Activity {
 	public void postData() {
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://www.myengineerlife.com/test/welcome.php");
-
+	    HttpPost httppost = new HttpPost("http://battery.myengineerlife.com/welcome.php");
+	    String descriptionFromUser=editDescription.getText().toString();
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        nameValuePairs.add(new BasicNameValuePair("description", "12345"));
-	        nameValuePairs.add(new BasicNameValuePair("testdata", "AndDev is Cool!"));
-	        nameValuePairs.add(new BasicNameValuePair("testtime", "2013-10-23"));
+	        nameValuePairs.add(new BasicNameValuePair("description", descriptionFromUser));
+	        nameValuePairs.add(new BasicNameValuePair("testdata", testData));
+	        nameValuePairs.add(new BasicNameValuePair("testtime", testTime));
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
+	        
 	        // Execute HTTP Post Request
 	        HttpResponse response = httpclient.execute(httppost);
 	        
@@ -74,9 +90,9 @@ public class UploadTestData extends Activity {
 		    try {
 		        // Add your data
 		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		        nameValuePairs.add(new BasicNameValuePair("description", "12345"));
-		        nameValuePairs.add(new BasicNameValuePair("testdata", "AndDev is Cool!"));
-		        nameValuePairs.add(new BasicNameValuePair("testtime", "2013-10-23"));
+		        nameValuePairs.add(new BasicNameValuePair("description", testType));
+		        nameValuePairs.add(new BasicNameValuePair("testdata", testData));
+		        nameValuePairs.add(new BasicNameValuePair("testtime", testTime));
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 		        // Execute HTTP Post Request

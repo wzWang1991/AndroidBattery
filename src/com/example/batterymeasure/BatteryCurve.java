@@ -197,7 +197,26 @@ public class BatteryCurve extends Activity {
 	
 	//Upload button click. Upload the report data to website.
 	public void uploadToWebsite(View v){
+		String uploadTestData="";
+		for(int i=0;i<batteryRecordTime.length;i++){
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			Date tmpTime = new Date();
+			try {
+				tmpTime = (Date) df.parse(batteryRecordTime[i]);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int testTime;
+			testTime=(int) ((tmpTime.getTime()-startTime.getTime())/1000);
+			int batteryReport = (int)(batteryLevel[i]*100/batteryScale[i]);
+			uploadTestData+=testTime+" "+batteryReport;
+			if(i!=batteryRecordTime.length-1) uploadTestData+=";";
+		}
 		Intent intent = new Intent(this, UploadTestData.class);
+		intent.putExtra("TEST_DATA", uploadTestData);
+		intent.putExtra("TEST_TYPE", taskType);
+		intent.putExtra("TEST_TIME", batteryRecordTime[0]);
 		startActivity(intent);
 	}
 	

@@ -8,57 +8,59 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".UploadTestData" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:scrollbars="vertical" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description:" />
-        
-        <EditText
-            android:id="@+id/editText1"
+        <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/linearLayout1"
-            android:layout_below="@+id/linearLayout1"
-            android:ems="10"
-            android:inputType="textMultiLine" >
+            android:orientation="vertical" >
 
-        <requestFocus />
-   		</EditText>
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:" />
 
-        
-       <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test data:" />
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/linearLayout1"
-            android:layout_below="@+id/linearLayout1"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textMultiLine" >
+            <EditText
+                android:id="@+id/editText_Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/linearLayout1"
+                android:layout_below="@+id/linearLayout1"
+                android:ems="10"
+                android:inputType="textMultiLine" >
 
-   		</EditText>
-        
-        <Button
-            android:id="@+id/button_upload_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="uploadData"
-            android:text="Submit" />
-        
-    </LinearLayout>
+                <requestFocus />
+            </EditText>
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test data:" />
 
+            <EditText
+                android:id="@+id/editText_TestData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/linearLayout1"
+                android:layout_below="@+id/linearLayout1"
+                android:ems="10"
+                android:enabled="false"
+                android:inputType="textMultiLine" >
+            </EditText>
+
+            <Button
+                android:id="@+id/button_upload_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="uploadData"
+                android:text="Submit" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

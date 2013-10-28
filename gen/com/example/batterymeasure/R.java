@@ -32,8 +32,8 @@ public final class R {
         public static final int editRunningTime=0x7f08000c;
         public static final int editRunningTimeInterval=0x7f080005;
         public static final int editStopBatteryPercentage=0x7f08000e;
-        public static final int editText1=0x7f080016;
-        public static final int editText2=0x7f080017;
+        public static final int editText_Description=0x7f080016;
+        public static final int editText_TestData=0x7f080017;
         public static final int linearLayout1=0x7f080015;
         public static final int radioButtonTestForPercentage=0x7f08000a;
         public static final int radioButtonTestForTime=0x7f080009;

@@ -53,7 +53,13 @@ public class PeriodicalTask extends Activity implements Runnable {
     	batteryLevel=100;
     	batteryScale=100;
     	
+    	
+    	
 		Thread thread = new Thread(this);
+    	Intent itService=new Intent(this, BatteryService.class);
+    	itService.addCategory("BatteryServiceTAG");
+    	startService(itService);
+		
 		thread.start();
 	}
 
@@ -70,7 +76,7 @@ public class PeriodicalTask extends Activity implements Runnable {
     	ArrayList<String> addressList = new ArrayList<String>();
     	addressList.add("Zhangzhou Fujian China");
     	addressList.add("Columbia University 116th Street and Broadway New York");
-    	addressList.add("Shanghai Jiaotong University");
+    	addressList.add("Shanghai Jiaotong University, Dongchuan Road 800");
     	
     	ArrayList<String> websiteList = new ArrayList<String>();
     	websiteList.add("http://www.google.com");

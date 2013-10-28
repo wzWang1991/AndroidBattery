@@ -103,9 +103,7 @@ public class MainActivity extends Activity {
     	filter.addAction("android.intent.action.battery");
     	this.registerReceiver(receiver, filter);
     	//tv.setText("abc");
-    	Intent itService=new Intent(this, BatteryService.class);
-    	itService.addCategory("BatteryServiceTAG");
-    	startService(itService);
+
     }
     
     public void viewCurve(View v) {
@@ -140,7 +138,6 @@ public class MainActivity extends Activity {
     		taskType="searchAddress";
     	}
     	
-    	
     	if(testMode.getCheckedRadioButtonId()==R.id.radioButtonTestForTime){
     		taskMode="StopByTime";
     	}else{
@@ -152,6 +149,7 @@ public class MainActivity extends Activity {
     	int runningTime = Integer.parseInt(runningTimeSetting.getText().toString());
     	int runningInterval = Integer.parseInt(runningTimeInterval.getText().toString());
     	int runningPercentage = Integer.parseInt(runningStopPercentage.getText().toString());
+
     	toastShow("Test start!");
     	intent.putExtra("RUNNING_INTERVAL", runningInterval);
     	intent.putExtra("RUNNING_TIME", runningTime);
