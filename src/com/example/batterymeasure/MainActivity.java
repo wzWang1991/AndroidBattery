@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.Gravity;
@@ -110,6 +115,18 @@ public class MainActivity extends Activity {
     	Intent intent = new Intent(this, BatteryCurve.class);
     	
     	int batteryArraySize = batteryConsumptionLevel.size();
+    	if(batteryArraySize==0){	
+    		new AlertDialog.Builder(this)
+            .setMessage("You should start test first.")
+            .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface dialoginterface, int i){
+                                        //
+                                    }
+                            })
+            .show();
+    		return;
+    	}
     	int[] batteryLevelArray = new int[batteryArraySize];
     	int[] batteryScaleArray = new int[batteryArraySize];
     	String[] batteryTimeArray  = new String[batteryArraySize];
@@ -121,6 +138,7 @@ public class MainActivity extends Activity {
     	intent.putExtra("BATTERY_TIME", batteryTimeArray);
     	intent.putExtra("BATTERY_LEVEL", batteryLevelArray);
     	intent.putExtra("BATTERY_SCALE", batteryScaleArray);
+    	intent.putExtra("TASK_INTERVAL", runningTimeInterval.getText().toString());
     	intent.putExtra("TASK_TYPE", taskType);
     	intent.putExtra("TASK_MODE", taskMode);
     	startActivity(intent);
@@ -159,18 +177,6 @@ public class MainActivity extends Activity {
     	startActivity(intent);
     }
     
-    public void getResult(View view){
-    	
-    	String tmp;
-    	tmp="";
-    	for(int i=0;i<batteryConsumptionTime.size();i++){
-    		tmp=tmp+batteryConsumptionTime.get(i)+"|"+batteryConsumptionLevel.get(i)+"%\n";
-    	}
-    	
- 
-		tv.setText(tmp);
-		
-	 }
     
     public class BatteryConsumptionReceiver extends BroadcastReceiver {
 

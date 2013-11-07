@@ -171,11 +171,6 @@
                 android:onClick="startTest"
                 android:text="Start Test" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="getResult"
-                android:text="@string/button_result" />
 
             <Button
                 android:layout_width="wrap_content"

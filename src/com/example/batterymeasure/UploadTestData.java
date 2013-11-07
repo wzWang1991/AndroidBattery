@@ -15,7 +15,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +29,7 @@ public class UploadTestData extends Activity {
 	String testData;
 	String testType;
 	String testTime;
+	String testInterval;
 	EditText editTestData;
 	EditText editDescription;
 
@@ -36,6 +41,7 @@ public class UploadTestData extends Activity {
 		testData=it.getStringExtra("TEST_DATA");
 		testType=it.getStringExtra("TEST_TYPE");
 		testTime=it.getStringExtra("TEST_TIME");
+		testInterval = it.getStringExtra("TEST_INTERVAL");
 		editTestData=(EditText)findViewById(R.id.editText_TestData);
 		editTestData.setText(testData);
 		editDescription=(EditText)findViewById(R.id.editText_Description);
@@ -53,29 +59,6 @@ public class UploadTestData extends Activity {
 		new SendRegistrationTask().execute();
 	}
 	
-	public void postData() {
-	    // Create a new HttpClient and Post Header
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://battery.myengineerlife.com/welcome.php");
-	    String descriptionFromUser=editDescription.getText().toString();
-	    try {
-	        // Add your data
-	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        nameValuePairs.add(new BasicNameValuePair("description", descriptionFromUser));
-	        nameValuePairs.add(new BasicNameValuePair("testdata", testData));
-	        nameValuePairs.add(new BasicNameValuePair("testtime", testTime));
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-	        
-	        // Execute HTTP Post Request
-	        HttpResponse response = httpclient.execute(httppost);
-	        
-	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    }
-	} 
 	
 	private class SendRegistrationTask extends AsyncTask<String, String, String> {
 
@@ -85,14 +68,21 @@ public class UploadTestData extends Activity {
 
 	    protected String doInBackground(String... aurl) {
 		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://www.myengineerlife.com/test/welcome.php");
-
+		    HttpPost httppost = new HttpPost("http://battery.myengineerlife.com/upload/upload.php");
+		    String descriptionFromUser=editDescription.getText().toString();
 		    try {
-		        // Add your data
+		    	
+		        
+		    	String model=android.os.Build.MODEL;
+		    	int brightness = getScreenBrightness(getApplicationContext());
+		    	
 		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		        nameValuePairs.add(new BasicNameValuePair("description", testType));
+		        nameValuePairs.add(new BasicNameValuePair("description", descriptionFromUser));
 		        nameValuePairs.add(new BasicNameValuePair("testdata", testData));
 		        nameValuePairs.add(new BasicNameValuePair("testtime", testTime));
+		        nameValuePairs.add(new BasicNameValuePair("model", model));
+		        nameValuePairs.add(new BasicNameValuePair("brightness", Integer.toString(brightness)));
+		        nameValuePairs.add(new BasicNameValuePair("interval", testInterval));	        
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 		        // Execute HTTP Post Request
@@ -111,5 +101,15 @@ public class UploadTestData extends Activity {
 	    }
 	}
 	
+	public static int getScreenBrightness(Context x) {
+	    int value = 0;
+	    ContentResolver cr = x.getContentResolver();
+	    try {
+	        value = Settings.System.getInt(cr, Settings.System.SCREEN_BRIGHTNESS);
+	    } catch (SettingNotFoundException e) {
+	        
+	    }
+	    return value;
+	}
 
 }
