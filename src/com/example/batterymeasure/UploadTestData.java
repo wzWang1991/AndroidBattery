@@ -1,8 +1,10 @@
 package com.example.batterymeasure;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -12,6 +14,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,9 +24,11 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class UploadTestData extends Activity {
 	String testData;
@@ -56,12 +61,22 @@ public class UploadTestData extends Activity {
 	}
 	
 	public void uploadData(View view){
-		new SendRegistrationTask().execute();
+		try {
+			String submitMessage = new SendRegistrationTask().execute().get();
+			toastShow(submitMessage);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finish();
 	}
 	
 	
 	private class SendRegistrationTask extends AsyncTask<String, String, String> {
-
+		String returnString;
 	    protected void onPreExecute() {
 	        // prepare the request
 	    }
@@ -70,6 +85,7 @@ public class UploadTestData extends Activity {
 		    HttpClient httpclient = new DefaultHttpClient();
 		    HttpPost httppost = new HttpPost("http://battery.myengineerlife.com/upload/upload.php");
 		    String descriptionFromUser=editDescription.getText().toString();
+		    String responseBody = null;
 		    try {
 		    	
 		        
@@ -87,13 +103,15 @@ public class UploadTestData extends Activity {
 
 		        // Execute HTTP Post Request
 		        HttpResponse response = httpclient.execute(httppost);
+		        responseBody = EntityUtils.toString(response.getEntity());
+		        //toastShow(responseBody);
 		        
 		    } catch (ClientProtocolException e) {
 		        // TODO Auto-generated catch block
 		    } catch (IOException e) {
 		        // TODO Auto-generated catch block
 		    }
-			return null;
+			return responseBody;
 	    }
 
 	    protected void onPostExecute(String result) {
@@ -111,5 +129,13 @@ public class UploadTestData extends Activity {
 	    }
 	    return value;
 	}
+    public void toastShow(String msg){
+        Context context = this;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, msg, duration); int offsetX = 0;
+        int offsetY = 0;
+        toast.setGravity(Gravity.BOTTOM, offsetX, offsetY);
+        toast.show();
+    }
 
 }
