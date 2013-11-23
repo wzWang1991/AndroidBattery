@@ -28,6 +28,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class UploadTestData extends Activity {
@@ -37,6 +38,7 @@ public class UploadTestData extends Activity {
 	String testInterval;
 	EditText editTestData;
 	EditText editDescription;
+	TextView textDevice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class UploadTestData extends Activity {
 		editTestData.setText(testData);
 		editDescription=(EditText)findViewById(R.id.editText_Description);
 		editDescription.setText(testType);
+		
+		textDevice = (TextView)findViewById(R.id.textViewDevice);
+		textDevice.setText(android.os.Build.MODEL);
 	}
 
 	@Override

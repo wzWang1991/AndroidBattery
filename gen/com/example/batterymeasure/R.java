@@ -24,22 +24,22 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080021;
-        public static final int appName=0x7f08001f;
+        public static final int action_settings=0x7f080023;
+        public static final int appName=0x7f080021;
         public static final int button1=0x7f080019;
         public static final int button_export=0x7f080002;
         public static final int button_upload=0x7f080003;
-        public static final int button_upload_data=0x7f08001d;
+        public static final int button_upload_data=0x7f08001f;
         public static final int curveView=0x7f080004;
         public static final int editRunningTime=0x7f08000d;
         public static final int editRunningTimeInterval=0x7f080006;
         public static final int editStopBatteryPercentage=0x7f08000f;
-        public static final int editText_Description=0x7f08001b;
-        public static final int editText_TestData=0x7f08001c;
-        public static final int icon=0x7f08001e;
+        public static final int editText_Description=0x7f08001d;
+        public static final int editText_TestData=0x7f08001e;
+        public static final int icon=0x7f080020;
         public static final int linearLayout1=0x7f08001a;
         public static final int lv=0x7f080000;
-        public static final int packageName=0x7f080020;
+        public static final int packageName=0x7f080022;
         public static final int radioButtonTestForPercentage=0x7f08000b;
         public static final int radioButtonTestForTime=0x7f08000a;
         public static final int radioButtonTestManualSelect=0x7f080015;
@@ -54,6 +54,8 @@ public final class R {
         public static final int textView7=0x7f08000e;
         public static final int textView8=0x7f080010;
         public static final int textViewCurve=0x7f080001;
+        public static final int textViewDevice=0x7f08001c;
+        public static final int textViewDeviceLable=0x7f08001b;
         public static final int textViewRadioButtonTestSelect=0x7f080011;
         public static final int textViewRadiobutton=0x7f080008;
         public static final int textViewScreenSwitch=0x7f080016;
