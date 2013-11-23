@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity {
@@ -33,12 +35,14 @@ public class MainActivity extends Activity {
 	private ArrayList<String> batteryConsumptionTime = new ArrayList<String>();
 	private ArrayList<Integer> batteryConsumptionLevel = new ArrayList<Integer>();
 	private ArrayList<Integer> batteryConsumptionScale = new ArrayList<Integer>();
-	TextView tv;
 	RadioGroup testMode;
 	RadioGroup testSelect;
 	EditText runningTimeSetting;
 	EditText runningTimeInterval;
 	EditText runningStopPercentage;
+	
+	private String manualPackageName;
+	private String manualClassName;
 	
     @SuppressLint("NewApi")
 	@Override
@@ -47,7 +51,6 @@ public class MainActivity extends Activity {
         //Prevent system gets into sleep mode.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
-        tv=(TextView)findViewById(R.id.textView1); 
         testMode=(RadioGroup)findViewById(R.id.radioGroup);
         testSelect=(RadioGroup)findViewById(R.id.radioGroupTestSelect);
         runningTimeSetting=(EditText)findViewById(R.id.editRunningTime);
@@ -152,8 +155,10 @@ public class MainActivity extends Activity {
     	
     	if(testSelect.getCheckedRadioButtonId()==R.id.radioButtonTestSelectWebsite){
     		taskType="visitWebsite";
-    	}else{
+    	}else if(testSelect.getCheckedRadioButtonId()==R.id.radioButtonTestSelectMap){
     		taskType="searchAddress";
+    	}else{
+    		taskType="manual";
     	}
     	
     	if(testMode.getCheckedRadioButtonId()==R.id.radioButtonTestForTime){
@@ -174,6 +179,12 @@ public class MainActivity extends Activity {
     	intent.putExtra("RUNNING_PERCENTAGE", runningPercentage);
     	intent.putExtra("TASK_TYPE", taskType);
     	intent.putExtra("TASK_MODE", taskMode);
+    	intent.putExtra("Manual_package_name", manualPackageName);
+    	intent.putExtra("Manual_class_name", manualClassName);
+    	
+    	ToggleButton screenSwitch = (ToggleButton)findViewById(R.id.toggleButtonScreenSwitch);
+    	intent.putExtra("ScreenSwitch", screenSwitch.isChecked());
+    	
     	startActivity(intent);
     }
     
@@ -188,7 +199,6 @@ public class MainActivity extends Activity {
 			int batteryScale = bundle.getInt("BATTERY_COMSUMPTION_SCALE");
 			saveBatteryConsumption(batteryTime, batteryLevel, batteryScale);
 			//tv.setText(batteryTime);
-			tv.setText(String.valueOf(batteryLevel));
 		}
     	
     }
@@ -199,27 +209,32 @@ public class MainActivity extends Activity {
 		batteryConsumptionScale.add(scale);
 	}
 	
+	public void selectApp(View v){
+		Intent intent = new Intent(this, AppShowActivity.class);
+		//startActivity(intent);
+		startActivityForResult(intent, 1);  
+	}
 	
-	
-	/**
-     *Keep screen on
-     *
-     * @param on
-     *            
-     */
-    private static WakeLock wl;
-    @SuppressWarnings("deprecation")
-	public static void keepScreenOn(Context context, boolean on) {
-        if (on) {
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            wl = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "==KeepScreenOn==");
-            wl.acquire();
-        } else {
-            if (wl != null) {
-                wl.release();
-                wl = null;
-            }
-        }
+    
+    @Override  
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+        switch (resultCode) {  
+        case RESULT_OK:  
+            Bundle bundle = data.getExtras();  
+            String appName = bundle.getString("appName");  
+            RadioButton userSelectApp = (RadioButton)findViewById(R.id.radioButtonTestManualSelect);
+            userSelectApp.setText(appName);
+            manualPackageName = bundle.getString("PackageName");
+            manualClassName = bundle.getString("ClassName");
+
+            testSelect.check(R.id.radioButtonTestManualSelect);
+            userSelectApp.setEnabled(true);
+           
+            break;  
+  
+        default:  
+            break;  
+        }  
     }
 
 

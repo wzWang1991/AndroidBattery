@@ -17,10 +17,12 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.Menu;
+import android.view.View;
 
 public class PeriodicalTask extends Activity implements Runnable {
 	private String taskType;
@@ -31,6 +33,13 @@ public class PeriodicalTask extends Activity implements Runnable {
 	private Date startTime;
 	private int batteryLevel;
 	private int batteryScale;
+	private boolean stopFlag;
+	
+	private String manualPackageName;
+	private String manualClassName;
+	
+	private boolean screenSwitch;
+	
 	BatteryConsumptionReceiver receiver;
 
 	@Override
@@ -43,7 +52,13 @@ public class PeriodicalTask extends Activity implements Runnable {
 		runningTime=intent.getIntExtra("RUNNING_TIME", 2);
 		runningInterval=intent.getIntExtra("RUNNING_INTERVAL", 5);
 		runningPercentage=intent.getIntExtra("RUNNING_PERCENTAGE", 2);
-		startTime = new Date();
+		
+		
+		manualPackageName = intent.getStringExtra("Manual_package_name");
+		manualClassName = intent.getStringExtra("Manual_class_name");
+		
+		screenSwitch = intent.getBooleanExtra("ScreenSwitch", true);
+		System.out.println(screenSwitch);
 		
     	receiver = new BatteryConsumptionReceiver();
     	IntentFilter filter = new IntentFilter();
@@ -58,6 +73,7 @@ public class PeriodicalTask extends Activity implements Runnable {
 		Thread thread = new Thread(this);
     	Intent itService=new Intent(this, BatteryService.class);
     	itService.addCategory("BatteryServiceTAG");
+    	
     	startService(itService);
 		
 		thread.start();
@@ -69,9 +85,18 @@ public class PeriodicalTask extends Activity implements Runnable {
 		getMenuInflater().inflate(R.menu.periodical_task, menu);
 		return true;
 	}
+	
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		stopFlag = true;
+	}
 
 	@Override
 	public void run() {
+		
+		startTime = new Date();
 		
     	ArrayList<String> addressList = new ArrayList<String>();
     	addressList.add("Zhangzhou Fujian China");
@@ -90,34 +115,65 @@ public class PeriodicalTask extends Activity implements Runnable {
     	int addressPointer=0;
         Intent searchAddress = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=211W 108th Street New York"));
         Context context = getApplicationContext();
-        keepScreenOn(context,true);
-        while(true){
-        	if(taskMode.equals("StopByTime")){
-        		if((new Date().getTime()-startTime.getTime())/1000>=runningTime*60) break;
-        	}else if(taskMode.equals("StopByPercentage")){
-        		if(batteryLevel*100/batteryScale<=runningPercentage) break;
-        	}
-        	if(batteryLevel*100/batteryScale<=5) break;
-    		searchAddress.setData(Uri.parse("geo:0,0?q="+addressList.get(addressPointer)+"?z=20"));
-    		visitWebsite.setData(Uri.parse(websiteList.get(addressPointer)));
-    		addressPointer++;
-    		if(taskType.equals("visitWebsite")){
-    			startActivity(visitWebsite);  
-    		}
-    		if(taskType.equals("searchAddress")){
-    			startActivity(searchAddress); 
-    		}
-
-			try{
-				Thread.sleep(1000*runningInterval);
-			}catch(Exception e)
-			{
-				
+        keepScreenOn(context,screenSwitch);
+        
+        stopFlag = false;
+        createStopNotification();
+        
+        boolean manualTestStartFlag = false;
+        
+        while(!stopFlag){
+			if (taskMode.equals("StopByTime")) {
+				if ((new Date().getTime() - startTime.getTime()) / 1000 >= runningTime * 60)
+					break;
+			} else if (taskMode.equals("StopByPercentage")) {
+				if (batteryLevel * 100 / batteryScale <= runningPercentage)
+					break;
 			}
-	   		if(addressPointer==addressList.size()){
-    			addressPointer=0;
-    			//break;
-    		}
+			if (batteryLevel * 100 / batteryScale <= 5)
+				break;
+        	
+        	
+        	//if type is manual
+			if (taskType.equals("manual")) {
+				//Prevent run several times.
+				if(!manualTestStartFlag){
+					manualTestStartFlag = true;
+					Intent it = new Intent();
+					ComponentName comp = new ComponentName(manualPackageName, manualClassName);
+					it.setComponent(comp); 
+					it.setAction(Intent.ACTION_VIEW); 
+					startActivity(it);
+				}
+				
+
+			}
+			else{
+
+				searchAddress.setData(Uri.parse("geo:0,0?q="
+						+ addressList.get(addressPointer) + "?z=20"));
+				visitWebsite
+						.setData(Uri.parse(websiteList.get(addressPointer)));
+				addressPointer++;
+
+				if (taskType.equals("visitWebsite")) {
+					startActivity(visitWebsite);
+				}
+
+				if (taskType.equals("searchAddress")) {
+					startActivity(searchAddress);
+				}
+
+				try {
+					Thread.sleep(1000 * runningInterval);
+				} catch (Exception e) {
+
+				}
+				if (addressPointer == addressList.size()) {
+					addressPointer = 0;
+					// break;
+				}
+			}
 		}
         keepScreenOn(context,false);
         unregisterReceiver(receiver);
@@ -154,6 +210,30 @@ public class PeriodicalTask extends Activity implements Runnable {
        notificationManager.notify(1,noti);
     }
     
+    @SuppressLint("NewApi")
+	public void createStopNotification(){
+        String svcName = Context.NOTIFICATION_SERVICE;
+        NotificationManager notificationManager;
+        notificationManager = (NotificationManager)getSystemService(svcName);
+        
+        Context context = getApplicationContext();
+        //notification;
+        Intent newIntent =new Intent(this, PeriodicalTask.class);
+        newIntent.putExtra("STOP_FLAG", true);
+        PendingIntent newPendingIntent=PendingIntent.getActivity(context, 0, newIntent, 0);
+        CharSequence charseq = "Test is running!";
+        Notification noti = new Notification.Builder(context)
+        .setContentTitle("Test Running!" )
+        .setContentText("Click Here to stop it now.")
+        .setSmallIcon(R.drawable.ic_launcher)
+        .setAutoCancel(true)
+        .setContentIntent(newPendingIntent)
+        .setTicker(charseq)
+        .build(); 
+       noti.defaults=Notification.DEFAULT_SOUND;
+       notificationManager.notify(1,noti);
+    }
+    
     
     public class BatteryConsumptionReceiver extends BroadcastReceiver {
 
@@ -166,6 +246,9 @@ public class PeriodicalTask extends Activity implements Runnable {
     	
     }
     
+    public void goback(View v){
+    	finish();
+    }
 	
 	/**
      *Keep screen on

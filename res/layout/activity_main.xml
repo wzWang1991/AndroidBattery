@@ -9,19 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <!-- <Button -->
-    <!-- android:id="@+id/button1" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:onClick="getBatteryInfo" -->
-    <!-- android:text="Start Battery Service" /> -->
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical" >
         
-        <LinearLayout
+       <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -162,14 +155,48 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Searching addresses with Google Map" />
+                    
+                    
+                    <Button
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:onClick="selectApp"
+	                    android:text="Select App" />
+                    <RadioButton
+                        android:id="@+id/radioButtonTestManualSelect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="Select an app from your device" />
                 </RadioGroup>
-            </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="startTest"
-                android:text="Start Test" />
+                
+
+            </LinearLayout>
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                
+	            <Button
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:onClick="startTest"
+	                android:text="Start Test" />
+				
+	            <TextView
+                    android:id="@+id/textViewScreenSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Keep screen on:" />
+	            
+	            <ToggleButton
+	                android:id="@+id/toggleButtonScreenSwitch"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:checked="true"
+	                android:text="ToggleButton" />
+	            
+            </LinearLayout>
 
 
             <Button
@@ -178,11 +205,6 @@
                 android:onClick="viewCurve"
                 android:text="@string/button_viewCurve" />
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
         </LinearLayout>
     </ScrollView>
 
