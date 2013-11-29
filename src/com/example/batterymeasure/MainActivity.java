@@ -43,6 +43,7 @@ public class MainActivity extends Activity {
 	
 	private String manualPackageName;
 	private String manualClassName;
+	private String manualAppName;
 	
     @SuppressLint("NewApi")
 	@Override
@@ -144,6 +145,9 @@ public class MainActivity extends Activity {
     	intent.putExtra("TASK_INTERVAL", runningTimeInterval.getText().toString());
     	intent.putExtra("TASK_TYPE", taskType);
     	intent.putExtra("TASK_MODE", taskMode);
+    	
+    	intent.putExtra("Manual_app_name", manualAppName);
+    	
     	startActivity(intent);
     }
   
@@ -181,6 +185,7 @@ public class MainActivity extends Activity {
     	intent.putExtra("TASK_MODE", taskMode);
     	intent.putExtra("Manual_package_name", manualPackageName);
     	intent.putExtra("Manual_class_name", manualClassName);
+    	intent.putExtra("Manual_app_name", manualAppName);
     	
     	ToggleButton screenSwitch = (ToggleButton)findViewById(R.id.toggleButtonScreenSwitch);
     	intent.putExtra("ScreenSwitch", screenSwitch.isChecked());
@@ -222,6 +227,7 @@ public class MainActivity extends Activity {
         case RESULT_OK:  
             Bundle bundle = data.getExtras();  
             String appName = bundle.getString("appName");  
+            manualAppName = appName;
             RadioButton userSelectApp = (RadioButton)findViewById(R.id.radioButtonTestManualSelect);
             userSelectApp.setText(appName);
             manualPackageName = bundle.getString("PackageName");

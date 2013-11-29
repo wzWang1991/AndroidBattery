@@ -37,6 +37,7 @@ public class PeriodicalTask extends Activity implements Runnable {
 	
 	private String manualPackageName;
 	private String manualClassName;
+	private String manualAppName;
 	
 	private boolean screenSwitch;
 	
@@ -56,6 +57,7 @@ public class PeriodicalTask extends Activity implements Runnable {
 		
 		manualPackageName = intent.getStringExtra("Manual_package_name");
 		manualClassName = intent.getStringExtra("Manual_class_name");
+		manualAppName = intent.getStringExtra("Manual_app_name");
 		
 		screenSwitch = intent.getBooleanExtra("ScreenSwitch", true);
 		System.out.println(screenSwitch);

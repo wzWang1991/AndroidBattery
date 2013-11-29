@@ -39,6 +39,8 @@ public class UploadTestData extends Activity {
 	EditText editTestData;
 	EditText editDescription;
 	TextView textDevice;
+	
+	String manualAppName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +51,15 @@ public class UploadTestData extends Activity {
 		testType=it.getStringExtra("TEST_TYPE");
 		testTime=it.getStringExtra("TEST_TIME");
 		testInterval = it.getStringExtra("TEST_INTERVAL");
+		
+		manualAppName = it.getStringExtra("Manual_app_name");
+		
 		editTestData=(EditText)findViewById(R.id.editText_TestData);
 		editTestData.setText(testData);
 		editDescription=(EditText)findViewById(R.id.editText_Description);
-		editDescription.setText(testType);
+		
+		if(testType.equals("manual")) editDescription.setText(testType+" "+manualAppName);
+		else editDescription.setText(testType);
 		
 		textDevice = (TextView)findViewById(R.id.textViewDevice);
 		textDevice.setText(android.os.Build.MODEL);
