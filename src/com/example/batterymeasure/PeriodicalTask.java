@@ -101,9 +101,10 @@ public class PeriodicalTask extends Activity implements Runnable {
 		startTime = new Date();
 		
     	ArrayList<String> addressList = new ArrayList<String>();
-    	addressList.add("Zhangzhou Fujian China");
+    	addressList.add("Ramon Aponte Playground, West 47th Street, New York, NY");
+    	addressList.add("The Lucerne Hotel, 201 W 79th St, New York, NY");
     	addressList.add("Columbia University 116th Street and Broadway New York");
-    	addressList.add("Shanghai Jiaotong University, Dongchuan Road 800");
+    	addressList.add("The Lucerne Hotel, 201 W 79th St, New York, NY");
     	
     	ArrayList<String> websiteList = new ArrayList<String>();
     	websiteList.add("http://www.google.com");
@@ -151,30 +152,37 @@ public class PeriodicalTask extends Activity implements Runnable {
 
 			}
 			else{
-
-				searchAddress.setData(Uri.parse("geo:0,0?q="
-						+ addressList.get(addressPointer) + "?z=20"));
-				visitWebsite
-						.setData(Uri.parse(websiteList.get(addressPointer)));
-				addressPointer++;
+				
+				
 
 				if (taskType.equals("visitWebsite")) {
+					if (addressPointer == websiteList.size()) {
+						addressPointer = 0;
+						// break;
+					}
+					visitWebsite.setData(Uri.parse(websiteList.get(addressPointer)));
 					startActivity(visitWebsite);
+
 				}
 
 				if (taskType.equals("searchAddress")) {
+					if (addressPointer == addressList.size()) {
+						addressPointer = 0;
+						// break;
+					}
+					searchAddress.setData(Uri.parse("geo:0,0?q=" + addressList.get(addressPointer) + "?z=20"));
 					startActivity(searchAddress);
+
 				}
+				
+				addressPointer++;
 
 				try {
 					Thread.sleep(1000 * runningInterval);
 				} catch (Exception e) {
 
 				}
-				if (addressPointer == addressList.size()) {
-					addressPointer = 0;
-					// break;
-				}
+
 			}
 		}
         keepScreenOn(context,false);

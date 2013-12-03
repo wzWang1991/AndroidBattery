@@ -36,11 +36,13 @@ public class UploadTestData extends Activity {
 	String testType;
 	String testTime;
 	String testInterval;
+	String manualAppName;
+	
 	EditText editTestData;
 	EditText editDescription;
 	TextView textDevice;
 	
-	String manualAppName;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

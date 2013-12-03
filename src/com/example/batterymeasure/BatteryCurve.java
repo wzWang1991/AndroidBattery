@@ -71,6 +71,7 @@ public class BatteryCurve extends Activity {
 			e.printStackTrace();
 		}
 		totalTestTime = (int) ((stopTime.getTime() - startTime.getTime()) / 1000);
+		
 		xLabel = new int[batteryRecordTime.length];
 		yLabel = new double[batteryRecordTime.length];
 

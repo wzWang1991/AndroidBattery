@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
 	private String manualClassName;
 	private String manualAppName;
 	
+	
     @SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {

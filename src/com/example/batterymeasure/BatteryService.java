@@ -42,14 +42,6 @@ public class BatteryService extends Service {
 		IntentFilter batteryReceiveFilter = new IntentFilter();
 		batteryReceiveFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 		registerReceiver(receiver, batteryReceiveFilter);
-		
-		//Intent batteryInfoIntent = getApplicationContext().registerReceiver( null ,new IntentFilter( Intent.ACTION_BATTERY_CHANGED ) ) ;
-		//int level = batteryInfoIntent.getIntExtra( "level" , 0 );  
-		//int scale = batteryInfoIntent.getIntExtra( "scale" , 100 );  
-		//sendBatteryConsumption(level,scale);
-		
-		
-		//Get initial battery level.
 	}
 	
 	public void onDestroy(){
@@ -69,7 +61,5 @@ public class BatteryService extends Service {
 		sendBroadcast(ittmp);
 	}
 	 
-
-
 
 }
