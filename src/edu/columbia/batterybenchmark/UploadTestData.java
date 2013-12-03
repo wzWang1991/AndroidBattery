@@ -1,7 +1,7 @@
-package com.example.batterymeasure;
+package edu.columbia.batterybenchmark;
+
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,36 +33,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UploadTestData extends Activity {
-	String testData;
-	String testType;
-	String testTime;
-	String testInterval;
-	String manualAppName;
-	
-	EditText editTestData;
-	EditText editDescription;
-	TextView textDevice;
+	private String testData;
+	private String testMode;
+	private String testTime;
+	private String testInterval;
+	private String testManualAppName;
+	private String autoTestSelection;
+	private boolean testManualScreenSwitch;
 	
 	
-
+	private EditText editTestData;
+	private EditText editDescription;
+	private TextView textDevice;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upload_test_data);
-		Intent it=getIntent();
-		testData=it.getStringExtra("TEST_DATA");
-		testType=it.getStringExtra("TEST_TYPE");
-		testTime=it.getStringExtra("TEST_TIME");
-		testInterval = it.getStringExtra("TEST_INTERVAL");
 		
-		manualAppName = it.getStringExtra("Manual_app_name");
+		Intent it=getIntent();
+
+		testData = it.getStringExtra("UploadTestData");
+		testMode = it.getStringExtra("TestMode");
+		testTime = it.getStringExtra("TestTime");
+		testInterval = it.getStringExtra("TestInterval");
+		testManualAppName = it.getStringExtra("TestManualAppName");
+		autoTestSelection = it.getStringExtra("AutoTestSelection");
+		testManualScreenSwitch = it.getBooleanExtra("TestManualScreenSwitch", true);
 		
 		editTestData=(EditText)findViewById(R.id.editText_TestData);
 		editTestData.setText(testData);
 		editDescription=(EditText)findViewById(R.id.editText_Description);
 		
-		if(testType.equals("manual")) editDescription.setText(testType+" "+manualAppName);
-		else editDescription.setText(testType);
+		if(testMode.equals("manual")) editDescription.setText(testMode+" "+testManualAppName);
+		else editDescription.setText(testMode+" "+autoTestSelection);
 		
 		textDevice = (TextView)findViewById(R.id.textViewDevice);
 		textDevice.setText(android.os.Build.MODEL);
@@ -88,9 +94,7 @@ public class UploadTestData extends Activity {
 		finish();
 	}
 	
-	
 	private class SendRegistrationTask extends AsyncTask<String, String, String> {
-		String returnString;
 	    protected void onPreExecute() {
 	        // prepare the request
 	    }
@@ -105,6 +109,9 @@ public class UploadTestData extends Activity {
 		        
 		    	String model=android.os.Build.MODEL;
 		    	int brightness = getScreenBrightness(getApplicationContext());
+		    	String brightnessString = Integer.toString(brightness);
+		    	if(testMode.equals("manual") && !testManualScreenSwitch)
+		    		brightnessString = "OFF";
 		    	
 		        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		        nameValuePairs.add(new BasicNameValuePair("description", descriptionFromUser));
@@ -143,6 +150,7 @@ public class UploadTestData extends Activity {
 	    }
 	    return value;
 	}
+	
     public void toastShow(String msg){
         Context context = this;
         int duration = Toast.LENGTH_SHORT;
@@ -151,5 +159,6 @@ public class UploadTestData extends Activity {
         toast.setGravity(Gravity.BOTTOM, offsetX, offsetY);
         toast.show();
     }
+	
 
 }

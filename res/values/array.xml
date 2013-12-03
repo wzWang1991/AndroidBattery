@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_testMode_entries">
+        <item>Auto</item>
+        <item>Manual</item>
+    </string-array>
+    
+   <string-array name="pref_testMode_values">
+        <item>auto</item>
+        <item>manual</item>
+    </string-array>
+    
+    <string-array name="pref_autoTestSelection_entries">
+        <item>Visit websites in Chrome periodcally</item>
+        <item>Search addresses in Google Map periodcally</item>
+    </string-array>
+    
+    <string-array name="pref_autoTestSelection_values">
+        <item>chrome</item>
+        <item>googleMap</item>
+    </string-array>
+    
+    <string-array name="pref_testFinishMode_entries">
+        <item>Test for a period of time</item>
+        <item>Test until battery gets certain percent</item>
+    </string-array>
+    
+    <string-array name="pref_testFinishMode_values">
+        <item>time</item>
+        <item>percent</item>
+    </string-array>
+    
+</resources>

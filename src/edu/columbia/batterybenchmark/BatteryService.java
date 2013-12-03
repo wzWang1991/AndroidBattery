@@ -1,25 +1,36 @@
-package com.example.batterymeasure;
+package edu.columbia.batterybenchmark;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-import android.app.AlertDialog;
+
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.IBinder;
-import android.text.format.DateFormat;
-import android.widget.TextView;
+
 
 public class BatteryService extends Service {
 
 	public static final String TAG = "BatteryServiceTAG";
 	private int level;
 	private int scale;
+	
+	private class BatteryInfoBroadcastReceiver extends BroadcastReceiver {
+		
+	    @Override
+	    public void onReceive(Context context, Intent intent) {
+	        if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+	            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+	            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
+	        }
+	    }
+	}
+	
 	private BatteryInfoBroadcastReceiver receiver = new BatteryInfoBroadcastReceiver(){
 		public void onReceive(Context context, Intent intent){
 			level = intent.getIntExtra("level", 0);
@@ -37,8 +48,6 @@ public class BatteryService extends Service {
 	//set filter for broadcast, only receive ACTION_BATTERY_CHANGED
 	@Override
 	public void onStart(Intent intent, int startID){
-		
-
 		IntentFilter batteryReceiveFilter = new IntentFilter();
 		batteryReceiveFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 		registerReceiver(receiver, batteryReceiveFilter);

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Test mode">
+
+        <ListPreference
+            android:key="pref_testMode"
+            android:title="@string/pref_testMode"
+            android:summary="@string/pref_testMode_summary"
+            android:dialogTitle="@string/pref_testMode"
+            android:entries="@array/pref_testMode_entries"
+			android:entryValues="@array/pref_testMode_values"
+			android:defaultValue="@string/pref_testMode_default" />
+
+    </PreferenceCategory>
+    
+	<PreferenceCategory
+        android:title="Auto test settings"
+        android:key="pref_autoTestSettings">
+        
+        <EditTextPreference
+            android:key="pref_testInterval"
+            android:title="@string/pref_testInterval"
+            android:summary="@string/pref_testInterval_summary"
+            android:dialogTitle="@string/pref_testInterval"
+            android:defaultValue="@string/pref_testInterval_default"
+			android:singleLine="false"
+            />	
+        <ListPreference
+            android:key="pref_autoTestSelection"
+            android:title="@string/pref_autoTestSelection"
+            android:summary="@string/pref_autoTestSelection_summary"
+            android:dialogTitle="@string/pref_autoTestSelection"
+            android:entries="@array/pref_autoTestSelection_entries"
+			android:entryValues="@array/pref_autoTestSelection_values"
+			android:defaultValue="@string/pref_autoTestSelection_default" />
+        <EditTextPreference
+            android:key="pref_websiteSetting"
+            android:title="@string/pref_websiteSetting"
+            android:summary="@string/pref_websiteSetting_summary"
+            android:dialogTitle="@string/pref_websiteSetting"
+            android:defaultValue="@string/pref_websiteSetting_default"
+            android:singleLine="false"
+            />
+        <EditTextPreference
+            android:key="pref_addressSetting"
+            android:title="@string/pref_addressSetting"
+            android:summary="@string/pref_addressSetting_summary"
+            android:dialogTitle="@string/pref_addressSetting"
+            android:defaultValue="@string/pref_addressSetting_default"
+			android:singleLine="false"
+            />
+
+        
+        
+        
+    </PreferenceCategory>
+    
+	<PreferenceCategory
+        android:title="Manual test settings"
+        android:key="pref_manualTestSettings">
+        
+	   <CheckBoxPreference
+        android:key="pref_manual_screenSwitch"
+        android:title="@string/pref_manual_screenSwitch"
+        android:summary="@string/pref_manual_screenSwitch_summary"
+        android:defaultValue="true" />
+	    
+        <Preference 
+            android:key="pref_manual_app"
+            android:title="@string/pref_manual_app"
+            android:summary="@string/pref_manual_app_summary">
+		</Preference>   
+		
+		<Preference 
+            android:key="pref_manual_app_display_name"
+            android:title="@string/pref_manual_app_display_name">
+
+		</Preference>
+	    
+        <Preference 
+            android:key="pref_manual_app_display_package"
+            android:title="@string/pref_manual_app_display_package">
+		</Preference>
+		
+        <Preference 
+            android:key="pref_manual_app_display_class"
+            android:title="@string/pref_manual_app_display_class">
+		</Preference>	
+
+    </PreferenceCategory>
+    
+	<PreferenceCategory
+        android:title="Test finish contition">
+        <ListPreference
+            android:key="pref_testFinishMode"
+            android:title="@string/pref_testFinishMode"
+            android:summary="@string/pref_testFinishMode_summary"
+            android:dialogTitle="@string/pref_testFinishMode"
+            android:entries="@array/pref_testFinishMode_entries"
+			android:entryValues="@array/pref_testFinishMode_values"
+			android:defaultValue="@string/pref_testFinishMode_default" />
+	    
+        
+        <EditTextPreference
+            android:key="pref_testTime"
+            android:title="@string/pref_testTime"
+            android:summary="@string/pref_testTime_summary"
+            android:dialogTitle="@string/pref_testTime"
+            android:defaultValue="@string/pref_testTime_default"
+			android:singleLine="true"
+            />
+        
+        <EditTextPreference
+            android:key="pref_testPercent"
+            android:title="@string/pref_testPercent"
+            android:summary="@string/pref_testPercent_summary"
+            android:dialogTitle="@string/pref_testPercent"
+            android:defaultValue="@string/pref_testPercent_default"
+			android:singleLine="true"
+            />
+        
+	</PreferenceCategory>
+
+</PreferenceScreen>

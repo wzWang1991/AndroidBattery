@@ -1,9 +1,10 @@
-package com.example.batterymeasure;
+package edu.columbia.batterybenchmark;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -88,7 +89,7 @@ public class AppShowActivity extends Activity {
 	    	String className = (String) map.get("className");
 	    	
 	        Intent i = new Intent();
-	        i.putExtra("appName", (String)map.get("appName"));
+	        i.putExtra("AppName", (String)map.get("appName"));
 	        i.putExtra("PackageName", packageName);
 	        i.putExtra("ClassName", className);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.batterymeasure"
+    package="edu.columbia.batterybenchmark"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -19,41 +19,40 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.batterymeasure.MainActivity"
+            android:name="edu.columbia.batterybenchmark.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden" >
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Chart -->
-
-        <activity android:name="org.achartengine.GraphicalActivity" />
         <activity
-            android:name="com.example.batterymeasure.PeriodicalTask"
+            android:name="edu.columbia.batterybenchmark.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="edu.columbia.batterybenchmark.AppShowActivity"
+            android:label="@string/title_activity_app_show" >
+        </activity>
+        <activity
+            android:name="edu.columbia.batterybenchmark.PeriodicalTask"
             android:label="@string/title_activity_periodical_task"
             android:launchMode="singleTask" >
         </activity>
+        <activity
+            android:name="edu.columbia.batterybenchmark.ViewCurve"
+            android:label="@string/title_activity_view_curve" >
+        </activity>
 
         <service
-            android:name="com.example.batterymeasure.BatteryService"
+            android:name="edu.columbia.batterybenchmark.BatteryService"
             android:enabled="true" />
 
         <activity
-            android:name="com.example.batterymeasure.BatteryCurve"
-            android:label="@string/title_activity_battery_curve" >
-        </activity>
-        <activity
-            android:name="com.example.batterymeasure.UploadTestData"
-            android:label="@string/title_activity_upload_test_data"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name="com.example.batterymeasure.AppShowActivity"
-            android:label="@string/title_activity_app_show" >
+            android:name="edu.columbia.batterybenchmark.UploadTestData"
+            android:label="@string/title_activity_upload_test_data" >
         </activity>
     </application>
 
