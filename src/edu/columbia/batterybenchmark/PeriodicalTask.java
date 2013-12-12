@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class PeriodicalTask extends Activity implements Runnable {
 
@@ -58,11 +60,19 @@ public class PeriodicalTask extends Activity implements Runnable {
 	private boolean pausedFlag;
 	private boolean manualTestStartFlag;
 	
+	private TextView textDisplay;
+	private Button btnContinue;
+	private Button btnStop;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_periodical_task);
+		
+		textDisplay = (TextView)findViewById(R.id.periodicalTask_paused);
+		btnContinue = (Button)findViewById(R.id.periodicalTask_button_continue);
+		btnStop = (Button)findViewById(R.id.periodicalTask_button_stop);
 		
 		//Read information from intent.
 		Intent intent = getIntent();
@@ -109,6 +119,10 @@ public class PeriodicalTask extends Activity implements Runnable {
 		
 		thread.start();
 		
+		textDisplay.setText("The task is paused. You can continue it or stop it now.");
+		btnContinue.setVisibility(View.VISIBLE);
+		btnStop.setText("Stop");
+		
 	}
 
 	@Override
@@ -122,6 +136,11 @@ public class PeriodicalTask extends Activity implements Runnable {
 	protected void onResume(){
 		super.onResume();
 		pausedFlag = true;
+		if(stopFlag){
+			textDisplay.setText("Test is finished. Please go back to main interface to view the result.");
+			btnContinue.setVisibility(View.INVISIBLE);
+			btnStop.setText("Go back");
+		}
 		
 	}
 
@@ -201,12 +220,11 @@ public class PeriodicalTask extends Activity implements Runnable {
 
 				}
 				arrayPointer++;
+			}
+			try {
+				Thread.sleep(1000 * testInterval);
+			} catch (Exception e) {
 
-				try {
-					Thread.sleep(1000 * testInterval);
-				} catch (Exception e) {
-
-				}
 			}
 		}
 
@@ -227,10 +245,12 @@ public class PeriodicalTask extends Activity implements Runnable {
 		
 		//TODO when stopFlag==true, it means user use go back button after test finishing.
 		
+		
+		
 		//Create finish notification.
 		Intent itMainActivity = new Intent(this, MainActivity.class);
 		createNotification("Test finished!","Test is finished, click here to go back.",itMainActivity);
-
+		stopFlag = true;
 	}
 	
 	
@@ -257,6 +277,9 @@ public class PeriodicalTask extends Activity implements Runnable {
     }
     
     public void stopTask(View v){
+    	if(stopFlag){
+    		finish();
+    	}
     	stopFlag = true;
     	
     }

@@ -94,6 +94,10 @@ public class MainActivity extends Activity {
 		String testManualAppPackage = sharedPreferences.getString("pref_manual_app_display_package", "");
 		String testManualAppClass = sharedPreferences.getString("pref_manual_app_display_class", "");
 		
+		if(testMode.equals("manual")){
+			if(testManualAppName.equals("")) return;
+		}
+		
 		String testWebsite = sharedPreferences.getString("pref_websiteSetting", "http://www.cs.columbia.edu");
 		String testAddress = sharedPreferences.getString("pref_addressSetting", "Columbia University, New York");
 		boolean testManualScreenSwitch = sharedPreferences.getBoolean("pref_manual_screenSwitch", true);

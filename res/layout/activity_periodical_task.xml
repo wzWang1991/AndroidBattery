@@ -9,7 +9,7 @@
     tools:context=".PeriodicalTask" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/periodicalTask_paused"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/periodicalTask_paused" />
@@ -18,8 +18,8 @@
         android:id="@+id/periodicalTask_button_continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/periodicalTask_paused"
+        android:layout_below="@+id/periodicalTask_paused"
         android:onClick="continueTask"
         android:text="@string/periodicalTask_continue" />
 

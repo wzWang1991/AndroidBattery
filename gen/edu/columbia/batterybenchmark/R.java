@@ -32,17 +32,17 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a001f;
-        public static final int appName=0x7f0a001d;
-        public static final int button_export=0x7f0a0019;
+        public static final int action_settings=0x7f0a0020;
+        public static final int appName=0x7f0a001e;
+        public static final int button_export=0x7f0a001a;
         public static final int button_startTest=0x7f0a000c;
-        public static final int button_upload=0x7f0a001a;
-        public static final int button_upload_data=0x7f0a0017;
+        public static final int button_upload=0x7f0a001b;
+        public static final int button_upload_data=0x7f0a0018;
         public static final int button_viewResult=0x7f0a000d;
-        public static final int curveView=0x7f0a001b;
-        public static final int editText_Description=0x7f0a0014;
-        public static final int editText_TestData=0x7f0a0016;
-        public static final int icon=0x7f0a001c;
+        public static final int curveView=0x7f0a001c;
+        public static final int editText_Description=0x7f0a0015;
+        public static final int editText_TestData=0x7f0a0017;
+        public static final int icon=0x7f0a001d;
         public static final int linearLayout1=0x7f0a0011;
         public static final int lv=0x7f0a0000;
         public static final int main_endTest=0x7f0a000b;
@@ -55,13 +55,14 @@ public final class R {
         public static final int main_testInterval_title=0x7f0a0007;
         public static final int main_testMode=0x7f0a0005;
         public static final int main_testMode_title=0x7f0a0001;
-        public static final int packageName=0x7f0a001e;
+        public static final int packageName=0x7f0a001f;
         public static final int periodicalTask_button_continue=0x7f0a000f;
         public static final int periodicalTask_button_stop=0x7f0a0010;
-        public static final int textView1=0x7f0a000e;
-        public static final int textView2=0x7f0a0015;
+        public static final int periodicalTask_paused=0x7f0a000e;
+        public static final int textView1=0x7f0a0014;
+        public static final int textView2=0x7f0a0016;
         public static final int textView9=0x7f0a0009;
-        public static final int textViewCurve=0x7f0a0018;
+        public static final int textViewCurve=0x7f0a0019;
         public static final int textViewDevice=0x7f0a0013;
         public static final int textViewDeviceLable=0x7f0a0012;
     }
