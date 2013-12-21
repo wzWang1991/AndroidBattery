@@ -183,15 +183,56 @@ public class ViewCurve extends Activity {
 		batteryReport += "Start time: "+batteryRecordTime[0]+"\n";
 		batteryReport += "Stop time: "+batteryRecordTime[batteryRecordTime.length - 1]+"\n";
 		batteryReport += "Total test time: "+ totalTestTime + " s\n";
-		if(totalBatteryConsumption!=0){
-		int projectedTimeInSeconds = totalTestTime*100/totalBatteryConsumption;
-		
-		int projectedTimePartMinute = projectedTimeInSeconds/60;
-		int projectedTimePartSecond = projectedTimeInSeconds%60;
-		
-		batteryReport = batteryReport + "\nProjected Battery Life: "+projectedTimePartMinute+" minutes and "+projectedTimePartSecond+" seconds.\n";
-		}else{
-			batteryReport+="Can't determine the projected battery life.";
+		if (totalBatteryConsumption != 0) {
+			//If the consumption>=2, we can calculate more accurate projected life.
+			if(totalBatteryConsumption>=2){
+				
+				int initPercentage = batteryLevel[0];
+				int endPercentage = batteryLevel[batteryLevel.length-1];
+				int accurateLifeStartPercentage = initPercentage - 1;
+				int accurateLifeStartTime = 0;
+				int accurateLifeEndPercentage = endPercentage;
+				int accurateLifeEndTime = 0;
+				//Search for first change of battery level.
+				for(int i=0;i<batteryLevel.length;i++){
+					if(batteryLevel[i]==accurateLifeStartPercentage){
+						try{
+							SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+							Date tmpTime = (Date) df.parse(batteryRecordTime[i]);
+							accurateLifeStartTime=(int) ((tmpTime.getTime()-startTime.getTime())/1000);
+						}catch(Exception e){
+							
+						}
+						break;
+					}
+				}
+				//Search for last change of battery level.
+				for(int i=batteryLevel.length-1;i>=0;i--){
+					if(batteryLevel[i]==accurateLifeEndPercentage+1){
+						try{
+							SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+							Date tmpTime = (Date) df.parse(batteryRecordTime[i+1]);
+							accurateLifeEndTime=(int) ((tmpTime.getTime()-startTime.getTime())/1000);
+						}catch(Exception e){
+							
+						}
+						break;
+					}
+				}
+				totalTestTime = accurateLifeEndTime - accurateLifeStartTime;
+				totalBatteryConsumption = accurateLifeStartPercentage - accurateLifeEndPercentage;
+			}
+			int projectedTimeInSeconds = totalTestTime * 100
+					/ totalBatteryConsumption;
+
+			int projectedTimePartMinute = projectedTimeInSeconds / 60;
+			int projectedTimePartSecond = projectedTimeInSeconds % 60;
+
+			batteryReport = batteryReport + "\nProjected Battery Life: "
+					+ projectedTimePartMinute + " minutes and "
+					+ projectedTimePartSecond + " seconds.\n";
+		} else {
+			batteryReport += "Can't determine the projected battery life.";
 		}
 		TextView tv = (TextView)findViewById(R.id.textViewCurve);
 		tv.setText(batteryReport);

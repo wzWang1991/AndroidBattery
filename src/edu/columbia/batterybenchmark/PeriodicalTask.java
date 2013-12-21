@@ -156,6 +156,9 @@ public class PeriodicalTask extends Activity implements Runnable {
 			if(autoTestSelection.equals("chrome")){
 				testIntent.setClassName("com.android.chrome", "com.google.android.apps.chrome.Main");  
 				testIntent.putExtra(Browser.EXTRA_APPLICATION_ID,"BatteryBenchmark");
+			}else{
+				//testIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS); 
+				testIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"); 
 			}
 	        keepScreenOn(context,true);
 		}else{

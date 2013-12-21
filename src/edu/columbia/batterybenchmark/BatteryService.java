@@ -19,6 +19,8 @@ public class BatteryService extends Service {
 	public static final String TAG = "BatteryServiceTAG";
 	private int level;
 	private int scale;
+	private int levelPrevious;
+	private int scalePrevious;
 	
 	private class BatteryInfoBroadcastReceiver extends BroadcastReceiver {
 		
@@ -35,7 +37,13 @@ public class BatteryService extends Service {
 		public void onReceive(Context context, Intent intent){
 			level = intent.getIntExtra("level", 0);
 			scale = intent.getIntExtra("scale", 100);
-			sendBatteryConsumption(level,scale);
+			
+			//Only send things when it changed.
+			if(level!=levelPrevious || scale!=scalePrevious){
+				levelPrevious = level;
+				scalePrevious = scale;
+				sendBatteryConsumption(level,scale);
+			}
 		}
 	};
 	
@@ -48,6 +56,9 @@ public class BatteryService extends Service {
 	//set filter for broadcast, only receive ACTION_BATTERY_CHANGED
 	@Override
 	public void onStart(Intent intent, int startID){
+		levelPrevious = -1;
+		scalePrevious = -1;
+		
 		IntentFilter batteryReceiveFilter = new IntentFilter();
 		batteryReceiveFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 		registerReceiver(receiver, batteryReceiveFilter);

@@ -52,15 +52,15 @@ public class AppShowActivity extends Activity {
 		for (ResolveInfo pi : packs) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 
-			if ((pi.activityInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0
-					&& (pi.activityInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
+		//	if ((pi.activityInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0
+		//			&& (pi.activityInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0) {
 				
 				map.put("icon", pi.activityInfo.loadIcon(pm));
 				map.put("appName", pi.activityInfo.loadLabel(pm));
 				map.put("packageName", pi.activityInfo.packageName);
 				map.put("className", pi.activityInfo.name);
 				items.add(map);
-			}
+		//	}
 			
 			
 		}
