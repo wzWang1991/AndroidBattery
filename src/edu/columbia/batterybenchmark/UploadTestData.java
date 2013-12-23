@@ -33,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UploadTestData extends Activity {
+	private final String UPLOAD_URL="http://battery.myengineerlife.com/upload/upload.php";
+	
 	private String testData;
 	private String testMode;
 	private String testTime;
@@ -101,7 +103,7 @@ public class UploadTestData extends Activity {
 
 	    protected String doInBackground(String... aurl) {
 		    HttpClient httpclient = new DefaultHttpClient();
-		    HttpPost httppost = new HttpPost("http://battery.myengineerlife.com/upload/upload.php");
+		    HttpPost httppost = new HttpPost(UPLOAD_URL);
 		    String descriptionFromUser=editDescription.getText().toString();
 		    String responseBody = null;
 		    try {

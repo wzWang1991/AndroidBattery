@@ -38,8 +38,8 @@
     <string name="pref_testTime">Set the test time</string>
     <string name="pref_testTime_summary">Click here to set the time(in minutes).</string>
     <string name="pref_testTime_default">120</string>
-    <string name="pref_testPercent">Set the battery finish pecentage</string>
-    <string name="pref_testPercent_summary">Click here to set the finish pecentage(in percent).</string>
+    <string name="pref_testPercent">Set the battery finish percentage</string>
+    <string name="pref_testPercent_summary">Click here to set the finish percentage(in percent).</string>
     <string name="pref_testPercent_default">10</string>
     <string name="pref_testInterval">Test interval</string>
     <string name="pref_testInterval_summary">Click here to set the test interval(in second).</string>

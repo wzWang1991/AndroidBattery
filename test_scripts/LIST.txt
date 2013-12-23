@@ -1,0 +1,11 @@
+Google Drive	test_gdrive.py
+#Open documents in google drive. There should be 3 documents in that account.
+
+Photoshop	test_ps.py
+#Switching from different effects.
+
+QuickOffice	test_quickoffice.py
+#Open a pdf file and view it. You should open at least one making it displaying in the history before you start testing.
+
+Gmail		test_gmail.py
+#Open two emails.
