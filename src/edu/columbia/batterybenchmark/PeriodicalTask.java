@@ -19,10 +19,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PeriodicalTask extends Activity implements Runnable {
 
@@ -114,7 +116,6 @@ public class PeriodicalTask extends Activity implements Runnable {
 		Thread thread = new Thread(this);
     	Intent itService=new Intent(this, BatteryService.class);
     	itService.addCategory("BatteryServiceTAG");
-    	System.out.println("abc");
     	startService(itService);
 		
 		thread.start();
@@ -280,8 +281,9 @@ public class PeriodicalTask extends Activity implements Runnable {
     }
     
     public void stopTask(View v){
+    	toastShow("Stopping...Please wait...");
     	if(stopFlag){
-    		finish();
+    		//finish();
     	}
     	stopFlag = true;
     	
@@ -310,6 +312,15 @@ public class PeriodicalTask extends Activity implements Runnable {
     }
     
     
+    public void toastShow(String msg){
+        Context context = this;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, msg, duration); int offsetX = 0;
+        int offsetY = 0;
+        toast.setGravity(Gravity.BOTTOM, offsetX, offsetY);
+        toast.show();
+    }
+	
 	//Function to keep screen on. If parameter is true then keep it on.
     private static WakeLock wl;
     @SuppressWarnings("deprecation")
